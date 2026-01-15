@@ -89,7 +89,7 @@
             </div>
              <div class="hidden sm:flex sm:flex-col sm:items-end">
                 <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset <%= interaction.recording? ? 'bg-red-50 text-red-700 ring-red-600/10' : 'bg-slate-50 text-slate-600 ring-slate-500/10' %>">
-                    <%= interaction.status_i18n %>
+                    <%= t("activerecord.enums.interaction.status.#{interaction.status}") %>
                 </span>
             </div>
           </li>

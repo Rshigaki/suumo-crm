@@ -29,6 +29,7 @@ class InteractionsController < ApplicationController
     else
       redirect_to interactions_path, alert: "Could not start recording."
     end
+  end
 
   # PATCH/PUT /interactions/1 or /interactions/1.json
   def update

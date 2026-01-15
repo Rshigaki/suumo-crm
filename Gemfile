@@ -54,6 +54,10 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # System testing
+  gem "capybara"
+  gem "selenium-webdriver"
 end
 
 group :development do

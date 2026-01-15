@@ -10,26 +10,25 @@
         <p class="mt-2 text-sm text-gray-500" data-recording-target="status">録音しています...</p>
       </div>
 
-      <!-- Hidden Form to submit on stop -->
-      <%= form_with(model: @interaction, class: "hidden") do |form| %>
+      <!-- Form to submit on stop -->
+      <%= form_with(model: @interaction, class: "flex flex-col items-center gap-4") do |form| %>
         <%= form.hidden_field :status, value: "processing" %>
-        <%= form.hidden_field :ended_at, value: Time.current %> <!-- In real app, JS updates this -->
+        <%= form.hidden_field :ended_at, value: Time.current %>
+        
+        <div class="flex justify-center gap-4">
+             <button type="button" 
+                    data-action="click->recording#start" 
+                    data-recording-target="startBtn" 
+                    class="hidden rounded-full bg-green-600 px-6 py-3 text-white font-bold shadow hover:bg-green-500">
+              録音開始
+            </button>
+
+            <%= form.button "録音終了", 
+                type: "submit", 
+                data: { action: "click->recording#stop", recording_target: "stopBtn" },
+                class: "rounded-full bg-red-600 px-8 py-4 text-white font-bold shadow-lg hover:bg-red-500 animate-pulse" %>
+        </div>
       <% end %>
-
-      <div class="flex justify-center gap-4">
-        <!-- Start button hidden because we auto-start on create -->
-        <button data-action="click->recording#start" 
-                data-recording-target="startBtn" 
-                class="hidden rounded-full bg-green-600 px-6 py-3 text-white font-bold shadow hover:bg-green-500">
-          録音開始
-        </button>
-
-        <button data-action="click->recording#stop" 
-                data-recording-target="stopBtn" 
-                class="rounded-full bg-red-600 px-8 py-4 text-white font-bold shadow-lg hover:bg-red-500 animate-pulse">
-          録音終了
-        </button>
-      </div>
        <div class="mt-4" data-controller="init-timer" data-action="init-timer:connect->recording#start"></div>
     </div>
 

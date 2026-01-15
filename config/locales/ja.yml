@@ -12,6 +12,7 @@ ja:
       user:
         name: "氏名"
         email: "メールアドレス"
+        password: "パスワード"
         role: "権限"
       customer:
         name: "顧客名"

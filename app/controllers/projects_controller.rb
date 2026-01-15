@@ -1,3 +1,4 @@
+class ProjectsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_project, only: %i[ show edit update destroy ]
 
@@ -26,7 +27,7 @@
 
     respond_to do |format|
       if @project.save
-        format.html { redirect_to @project, notice: "Project was successfully created." }
+        format.html { redirect_to @project, notice: "案件を登録しました" }
         format.json { render :show, status: :created, location: @project }
       else
         format.html { render :new, status: :unprocessable_entity }

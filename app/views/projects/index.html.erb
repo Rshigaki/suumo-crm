@@ -47,7 +47,7 @@
                            else 'bg-gray-50 text-gray-600 ring-gray-500/10'
                            end %>
                         <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset <%= status_color %>">
-                            <%= project.status_i18n %>
+                            <%= t("activerecord.enums.project.status.#{project.status}") %>
                         </span>
                     </td>
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-slate-500"><%= project.customer.name %></td>
