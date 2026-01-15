@@ -1,0 +1,22 @@
+databases:
+  - name: volatile_viking_db
+    databaseName: volatile_viking_production
+    plan: free # 90日後にデータが消える制限がありますが、テスト用には十分です
+
+services:
+  - type: web
+    name: volatile_viking_web
+    runtime: docker # Dockerfile を使用してビルドします
+    plan: free
+    region: singapore # 日本から近いリージョンを選択 (お好みで oregon 等に変更可)
+    envVars:
+      - key: RAILS_MASTER_KEY
+        sync: false # ダッシュボードで手入力するための設定（セキュリティのため）
+      - key: DATABASE_URL
+        fromDatabase:
+          name: volatile_viking_db
+          property: connectionString
+      - key: RAILS_LOG_TO_STDOUT
+        value: "true"
+      - key: WEB_CONCURRENCY
+        value: "2"

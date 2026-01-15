@@ -1,0 +1,83 @@
+<% content_for :title, "顧客管理" %>
+
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h1 class="text-2xl font-bold leading-6 text-slate-900">顧客管理</h1>
+      <p class="mt-2 text-sm text-slate-500">見込み客から既存顧客までの全顧客リストです。</p>
+    </div>
+    <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+      <%= link_to new_customer_path, class: "block rounded-lg bg-indigo-600 px-4 py-2.5 text-center text-sm font-semibold text-white shadow-md hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all" do %>
+        <span class="mr-1">+</span> 新規顧客登録
+      <% end %>
+    </div>
+  </div>
+
+  <div class="mt-8 flow-root">
+    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+        <div class="overflow-hidden shadow-lg shadow-slate-200/50 ring-1 ring-slate-900/5 sm:rounded-2xl bg-white">
+          <table class="min-w-full divide-y divide-slate-200">
+            <thead class="bg-slate-50">
+              <tr>
+                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-slate-900 sm:pl-6">氏名</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-slate-900">電話番号 / Email</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-slate-900">流入媒体</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-slate-900">担当者</th>
+                <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                  <span class="sr-only">編集</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 bg-white">
+              <% if @customers.any? %>
+                <% @customers.each do |customer| %>
+                  <tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-slate-900 sm:pl-6">
+                        <div class="flex items-center">
+                            <div class="h-9 w-9 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-xs mr-3">
+                                <%= customer.name[0,1] %>
+                            </div>
+                            <%= customer.name %>
+                        </div>
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-slate-500">
+                        <div class="flex flex-col">
+                            <span class="text-slate-900"><%= customer.phone %></span>
+                            <span class="text-xs text-slate-400"><%= customer.email %></span>
+                        </div>
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-slate-500">
+                        <% if customer.media_source %>
+                            <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10"><%= customer.media_source.name %></span>
+                        <% else %>
+                            <span class="text-slate-400 text-xs">-</span>
+                        <% end %>
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-slate-500"><%= customer.user.name %></td>
+                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                      <%= link_to "詳細", customer, class: "text-indigo-600 hover:text-indigo-900 mr-3" %>
+                      <%= link_to "編集", edit_customer_path(customer), class: "text-slate-400 hover:text-slate-600" %>
+                    </td>
+                  </tr>
+                <% end %>
+              <% else %>
+                 <tr>
+                    <td colspan="5" class="py-10 text-center text-slate-500">
+                        <p class="text-base font-medium text-slate-900">顧客が見つかりません</p>
+                        <p class="mt-1 text-sm text-slate-500">新しい顧客を登録して始めましょう。</p>
+                        <div class="mt-6">
+                            <%= link_to new_customer_path, class: "inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" do %>
+                                <span class="mr-2">+</span> 新規顧客登録
+                            <% end %>
+                        </div>
+                    </td>
+                 </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

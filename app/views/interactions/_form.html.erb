@@ -1,0 +1,67 @@
+<%= form_with(model: interaction, class: "contents") do |form| %>
+  <% if interaction.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(interaction.errors.count, "error") %> prohibited this interaction from being saved:</h2>
+
+      <ul class="list-disc ml-6">
+        <% interaction.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="my-5">
+    <%= form.label :customer_id %>
+    <%= form.text_field :customer_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": interaction.errors[:customer_id].none?, "border-red-400 focus:outline-red-600": interaction.errors[:customer_id].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": interaction.errors[:user_id].none?, "border-red-400 focus:outline-red-600": interaction.errors[:user_id].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :company_id %>
+    <%= form.text_field :company_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": interaction.errors[:company_id].none?, "border-red-400 focus:outline-red-600": interaction.errors[:company_id].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :started_at %>
+    <%= form.datetime_field :started_at, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": interaction.errors[:started_at].none?, "border-red-400 focus:outline-red-600": interaction.errors[:started_at].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :ended_at %>
+    <%= form.datetime_field :ended_at, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": interaction.errors[:ended_at].none?, "border-red-400 focus:outline-red-600": interaction.errors[:ended_at].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :recording_url %>
+    <%= form.text_field :recording_url, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": interaction.errors[:recording_url].none?, "border-red-400 focus:outline-red-600": interaction.errors[:recording_url].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :transcript %>
+    <%= form.textarea :transcript, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": interaction.errors[:transcript].none?, "border-red-400 focus:outline-red-600": interaction.errors[:transcript].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :memo %>
+    <%= form.textarea :memo, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": interaction.errors[:memo].none?, "border-red-400 focus:outline-red-600": interaction.errors[:memo].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :questionnaire_data %>
+    <%= form.text_field :questionnaire_data, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": interaction.errors[:questionnaire_data].none?, "border-red-400 focus:outline-red-600": interaction.errors[:questionnaire_data].any?}] %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :status %>
+    <%= form.number_field :status, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": interaction.errors[:status].none?, "border-red-400 focus:outline-red-600": interaction.errors[:status].any?}] %>
+  </div>
+
+  <div class="inline">
+    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  </div>
+<% end %>

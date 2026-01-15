@@ -1,0 +1,67 @@
+ja:
+  activerecord:
+    models:
+      user: "担当者"
+      company: "会社"
+      customer: "顧客"
+      project: "案件"
+      interaction: "接客/商談"
+      point_log: "ポイント履歴"
+      media_source: "広告媒体"
+    attributes:
+      user:
+        name: "氏名"
+        email: "メールアドレス"
+        role: "権限"
+      customer:
+        name: "顧客名"
+        phone: "電話番号"
+        email: "メールアドレス"
+        address: "住所"
+        media_source: "流入媒体"
+        user: "担当者"
+      project:
+        name: "案件名"
+        status: "ステータス"
+        contract_date: "契約日"
+        delivery_date: "引渡日"
+        estimated_amount: "見積金額"
+        customer: "顧客"
+        user: "担当者"
+      interaction:
+        customer: "顧客"
+        user: "担当者"
+        started_at: "開始日時"
+        ended_at: "終了日時"
+        transcript: "文字起こし"
+        memo: "メモ"
+        status: "状態"
+      media_source:
+        name: "媒体名"
+    enums:
+      user:
+        role:
+          staff: "スタッフ"
+          admin: "管理者"
+      project:
+        status:
+          pending: "検討中"
+          negotiating: "商談中"
+          contracted: "契約済"
+          started: "着工"
+          delivered: "引渡"
+      interaction:
+        status:
+          recording: "録音中"
+          processing: "処理中"
+          completed: "完了"
+  date:
+    formats:
+      default: "%Y/%m/%d"
+      short: "%m/%d"
+      long: "%Y年%m月%d日(%a)"
+  time:
+    formats:
+      default: "%Y/%m/%d %H:%M"
+      short: "%m/%d %H:%M"
+      long: "%Y年%m月%d日(%a) %H:%M"
