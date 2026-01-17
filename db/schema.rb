@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_15_135914) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_17_033852) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -41,6 +41,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_15_135914) do
     t.bigint "customer_id"
     t.datetime "ended_at"
     t.text "memo"
+    t.text "minutes"
     t.jsonb "questionnaire_data"
     t.string "recording_url"
     t.datetime "started_at"

@@ -36,11 +36,11 @@ class InteractionsController < ApplicationController
     transcript = @interaction.transcript
     if transcript.present?
       summary = GeminiService.new.summarize(transcript)
-      @interaction.update(memo: (@interaction.memo.to_s + "\n\n" + summary).strip)
+      @interaction.update(minutes: summary)
       
       respond_to do |format|
         format.turbo_stream { 
-           render turbo_stream: turbo_stream.replace("memo_field", partial: "interactions/memo_field", locals: { interaction: @interaction }) 
+           render turbo_stream: turbo_stream.replace("minutes_field", partial: "interactions/minutes_field", locals: { interaction: @interaction }) 
         }
         format.html { redirect_to edit_interaction_path(@interaction), notice: "AI summary generated." }
       end
@@ -55,6 +55,13 @@ class InteractionsController < ApplicationController
   def update
     respond_to do |format|
       if @interaction.update(interaction_params)
+        
+        # Auto-generate minutes if transcript exists but minutes are empty
+        if @interaction.transcript.present? && @interaction.minutes.blank?
+           summary = GeminiService.new.summarize(@interaction.transcript)
+           @interaction.update_column(:minutes, summary)
+        end
+
         if @interaction.completed?
            # Award points
            PointLog.create(user: current_user, company: current_user.company, points: 10, reason: "Interaction Completed")
@@ -88,6 +95,6 @@ class InteractionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def interaction_params
-      params.expect(interaction: [ :customer_id, :started_at, :ended_at, :recording_url, :transcript, :memo, :questionnaire_data, :status ])
+      params.expect(interaction: [ :customer_id, :started_at, :ended_at, :recording_url, :transcript, :memo, :minutes, :questionnaire_data, :status ])
     end
 end
