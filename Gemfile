@@ -76,3 +76,6 @@ end
 gem "devise", "~> 4.9"
 
 gem "rails-i18n", "~> 8.1"
+gem "redcarpet"
+
+
