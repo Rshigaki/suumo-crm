@@ -2,7 +2,7 @@ require "faraday"
 require "faraday/retry"
 
 class GeminiService
-  API_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent"
+  API_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
 
   def initialize(api_key: ENV["GEMINI_API_KEY"])
     @api_key = api_key
