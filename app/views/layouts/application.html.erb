@@ -31,13 +31,25 @@
     <%= render "shared/navbar" %>
     <main class="min-h-screen">
     <% if notice %>
-      <div class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 shadow-lg z-50 transition-opacity duration-500" role="alert">
+      <div class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 shadow-lg z-50 transition-opacity duration-500 flex items-center gap-4" role="alert" data-controller="flash">
         <p><%= notice %></p>
+        <button type="button" data-action="flash#dismiss" class="text-blue-500 hover:text-blue-700 font-bold focus:outline-none">
+           <span class="sr-only">Close</span>
+           <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+           </svg>
+        </button>
       </div>
     <% end %>
     <% if alert %>
-      <div class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 shadow-lg z-50 transition-opacity duration-500" role="alert">
+      <div class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 shadow-lg z-50 transition-opacity duration-500 flex items-center gap-4" role="alert" data-controller="flash">
         <p><%= alert %></p>
+         <button type="button" data-action="flash#dismiss" class="text-red-500 hover:text-red-700 font-bold focus:outline-none">
+           <span class="sr-only">Close</span>
+           <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+           </svg>
+        </button>
       </div>
     <% end %>
     <%= yield %>

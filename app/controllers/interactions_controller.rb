@@ -38,7 +38,7 @@ class InteractionsController < ApplicationController
         if @interaction.completed?
            # Award points
            PointLog.create(user: current_user, company: current_user.company, points: 10, reason: "Interaction Completed")
-          format.html { redirect_to @interaction, notice: "Interaction completed. You earned 10 points!" }
+          format.html { redirect_to @interaction, notice: "接客データを保存しました。10ポイント獲得！" }
         else
           format.html { redirect_to edit_interaction_path(@interaction), status: :see_other }
         end
