@@ -81,8 +81,10 @@
   <% end %>
 </div>
 
-<!-- External form for AI Summarization (to avoid nested forms) -->
-<%= button_to "Summarize", summarize_interaction_path(@interaction), method: :post, id: "hidden-summarize-form", class: "hidden", form_class: "hidden" %>
+<!-- External form for AI Summarization -->
+<form action="<%= summarize_interaction_path(@interaction) %>" method="post" id="ai-summarize-form" class="hidden">
+  <%= token_tag %>
+</form>
 
 
 <script>
