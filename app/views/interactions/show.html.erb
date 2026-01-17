@@ -1,15 +1,82 @@
-<% content_for :title, "Showing interaction" %>
+<% content_for :title, "接客詳細 ##{@interaction.id}" %>
 
-<div class="md:w-2/3 w-full">
+<div class="mx-auto w-full max-w-[800px] px-4 space-y-6">
+  
   <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+    <!-- Flash is handled globally usually, but if inline needed: -->
+    <!-- <div class="rounded-md bg-green-50 p-4 mb-4"> ... </div> -->
   <% end %>
 
-  <h1 class="font-bold text-4xl">Showing interaction</h1>
+  <div class="bg-white shadow sm:rounded-lg p-8">
+    <div class="border-b border-gray-200 pb-5 mb-6 flex justify-between items-center">
+        <div>
+            <h3 class="text-base font-semibold leading-6 text-gray-900">接客詳細</h3>
+            <p class="mt-2 text-sm text-gray-500">ID: <%= @interaction.id %> | 日時: <%= @interaction.started_at&.strftime("%Y/%m/%d %H:%M") %></p>
+        </div>
+        <div>
+            <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset <%= @interaction.completed? ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-yellow-50 text-yellow-800 ring-yellow-600/20' %>">
+                <%= @interaction.status_i18n %>
+            </span>
+        </div>
+    </div>
 
-  <%= render @interaction %>
+    <div class="space-y-8">
+        <!-- Customer -->
+        <div>
+            <h4 class="block text-sm font-medium leading-6 text-gray-900 mb-2">顧客</h4>
+            <div class="p-3 bg-gray-50 rounded-md border border-gray-200 text-gray-900">
+                <% if @interaction.customer %>
+                    <%= link_to @interaction.customer.name, customer_path(@interaction.customer), class: "font-semibold text-indigo-600 hover:underline" %>
+                    <span class="text-gray-500 text-sm ml-2">(<%= @interaction.customer.status_i18n %>)</span>
+                <% else %>
+                    <span class="text-gray-400 italic">未割り当て</span>
+                <% end %>
+            </div>
+        </div>
 
-  <%= link_to "Edit this interaction", edit_interaction_path(@interaction), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to interactions", interactions_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= button_to "Destroy this interaction", @interaction, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+        <!-- Transcript -->
+        <div>
+            <h4 class="block text-sm font-medium leading-6 text-gray-900 mb-2">文字起こし</h4>
+            <div class="p-4 bg-gray-50 rounded-md border border-gray-200 text-gray-700 text-sm whitespace-pre-wrap max-h-60 overflow-y-auto">
+                <%= @interaction.transcript.presence || "（データなし）" %>
+            </div>
+        </div>
+
+        <!-- AI Minutes -->
+        <div>
+             <h4 class="block text-sm font-medium leading-6 text-gray-900 mb-2 flex items-center gap-2">
+                AI議事録
+                <span class="inline-flex items-center rounded-full bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-inset ring-purple-700/10">AI Generated</span>
+             </h4>
+             <div class="p-5 bg-white rounded-md border border-gray-200 shadow-sm prose prose-sm max-w-none text-gray-800">
+                 <% if @interaction.minutes.present? %>
+                    <%= markdown(@interaction.minutes) %>
+                 <% else %>
+                    <p class="text-gray-400 italic">（議事録は生成されていません）</p>
+                 <% end %>
+             </div>
+        </div>
+
+        <!-- Memo -->
+        <div>
+            <h4 class="block text-sm font-medium leading-6 text-gray-900 mb-2">担当者メモ</h4>
+             <div class="p-4 bg-yellow-50 rounded-md border border-yellow-200 text-gray-800 text-sm whitespace-pre-wrap">
+                <%= @interaction.memo.presence || "（メモなし）" %>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="border-t border-gray-200 pt-6 mt-8 flex items-center justify-end gap-x-4">
+        <%= link_to interactions_path, class: "text-sm font-semibold leading-6 text-gray-900 hover:text-gray-700" do %>
+            一覧に戻る
+        <% end %>
+        
+        <%= button_to "削除", @interaction, method: :delete, form: { data: { turbo_confirm: "本当に削除しますか？" } }, class: "text-sm font-semibold leading-6 text-red-600 hover:text-red-500 bg-transparent border-none cursor-pointer" %>
+
+        <%= link_to edit_interaction_path(@interaction), class: "rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" do %>
+            編集する
+        <% end %>
+    </div>
+  </div>
 </div>
