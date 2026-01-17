@@ -1,6 +1,6 @@
 class InteractionsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_interaction, only: %i[ show edit update destroy ]
+  before_action :set_interaction, only: %i[ show edit update destroy summarize ]
 
   # GET /interactions or /interactions.json
   def index
