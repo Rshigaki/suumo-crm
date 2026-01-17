@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :interactions
+  resources :interactions do
+    member do
+      post :summarize
+    end
+  end
   resources :projects
   resources :customers
   resources :reports

@@ -31,6 +31,26 @@ class InteractionsController < ApplicationController
     end
   end
 
+  # POST /interactions/1/summarize
+  def summarize
+    transcript = @interaction.transcript
+    if transcript.present?
+      summary = GeminiService.new.summarize(transcript)
+      @interaction.update(memo: (@interaction.memo.to_s + "\n\n" + summary).strip)
+      
+      respond_to do |format|
+        format.turbo_stream { 
+           render turbo_stream: turbo_stream.replace("memo_field", partial: "interactions/memo_field", locals: { interaction: @interaction }) 
+        }
+        format.html { redirect_to edit_interaction_path(@interaction), notice: "AI summary generated." }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to edit_interaction_path(@interaction), alert: "No transcript to summarize." }
+      end
+    end
+  end
+
   # PATCH/PUT /interactions/1 or /interactions/1.json
   def update
     respond_to do |format|
