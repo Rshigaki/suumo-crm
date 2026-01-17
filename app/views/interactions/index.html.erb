@@ -37,7 +37,7 @@
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-slate-500"><%= interaction.customer&.name || "未割当" %></td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-slate-500"><%= interaction.user.name %></td>
                   <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                    <%= link_to "詳細", edit_interaction_path(interaction), class: "text-indigo-600 hover:text-indigo-900" %>
+                    <%= link_to "詳細", interaction_path(interaction), class: "text-indigo-600 hover:text-indigo-900" %>
                   </td>
                 </tr>
               <% end %>
