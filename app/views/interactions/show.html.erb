@@ -1,5 +1,6 @@
 <% content_for :title, "接客詳細 ##{@interaction.id}" %>
 
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
   <div class="bg-white shadow sm:rounded-lg p-8">
     <div class="border-b border-gray-200 pb-5 mb-6 flex justify-between items-center">
         <div>
@@ -13,48 +14,56 @@
         </div>
     </div>
 
-    <div class="space-y-8">
+    <div class="space-y-6">
         <!-- Customer -->
         <div>
-            <h4 class="block text-sm font-medium leading-6 text-gray-900 mb-2">顧客</h4>
-            <div class="p-3 bg-gray-50 rounded-md border border-gray-200 text-gray-900">
-                <% if @interaction.customer %>
-                    <%= link_to @interaction.customer.name, customer_path(@interaction.customer), class: "font-semibold text-indigo-600 hover:underline" %>
-                    <span class="text-gray-500 text-sm ml-2">(<%= @interaction.customer.respond_to?(:status_i18n) ? @interaction.customer.status_i18n : @interaction.customer.status %>)</span>
-                <% else %>
-                    <span class="text-gray-400 italic">未割り当て</span>
-                <% end %>
+            <h4 class="block text-sm font-medium leading-6 text-gray-900">顾客</h4>
+            <div class="mt-2">
+                <div class="p-3 bg-gray-50 rounded-md border border-gray-200 text-gray-900">
+                    <% if @interaction.customer %>
+                        <%= link_to @interaction.customer.name, customer_path(@interaction.customer), class: "font-semibold text-indigo-600 hover:underline" %>
+                        <span class="text-gray-500 text-sm ml-2">(<%= @interaction.customer.respond_to?(:status_i18n) ? @interaction.customer.status_i18n : @interaction.customer.status %>)</span>
+                    <% else %>
+                        <span class="text-gray-400 italic">未割り当て</span>
+                    <% end %>
+                </div>
             </div>
         </div>
 
         <!-- Transcript -->
         <div>
-            <h4 class="block text-sm font-medium leading-6 text-gray-900 mb-2">文字起こし</h4>
-            <div class="p-4 bg-gray-50 rounded-md border border-gray-200 text-gray-700 text-sm whitespace-pre-wrap max-h-60 overflow-y-auto">
-                <%= @interaction.transcript.presence || "（データなし）" %>
+            <h4 class="block text-sm font-medium leading-6 text-gray-900">文字起こし</h4>
+            <div class="mt-2">
+                <div class="p-4 bg-gray-50 rounded-md border border-gray-200 text-gray-700 text-sm whitespace-pre-wrap max-h-60 overflow-y-auto">
+                    <%= @interaction.transcript.presence || "（データなし）" %>
+                </div>
             </div>
         </div>
 
         <!-- AI Minutes -->
         <div>
-             <h4 class="block text-sm font-medium leading-6 text-gray-900 mb-2 flex items-center gap-2">
+             <h4 class="block text-sm font-medium leading-6 text-gray-900 flex items-center gap-2">
                 AI議事録
                 <span class="inline-flex items-center rounded-full bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-inset ring-purple-700/10">AI Generated</span>
              </h4>
-             <div class="p-5 bg-white rounded-md border border-gray-200 shadow-sm prose prose-sm max-w-none text-gray-800">
-                 <% if @interaction.minutes.present? %>
-                    <%= markdown(@interaction.minutes) %>
-                 <% else %>
-                    <p class="text-gray-400 italic">（議事録は生成されていません）</p>
-                 <% end %>
+             <div class="mt-2">
+                 <div class="p-5 bg-white rounded-md border border-gray-200 shadow-sm prose prose-sm max-w-none text-gray-800">
+                     <% if @interaction.minutes.present? %>
+                        <%= markdown(@interaction.minutes) %>
+                     <% else %>
+                        <p class="text-gray-400 italic">（議事録は生成されていません）</p>
+                     <% end %>
+                 </div>
              </div>
         </div>
 
         <!-- Memo -->
         <div>
-            <h4 class="block text-sm font-medium leading-6 text-gray-900 mb-2">担当者メモ</h4>
-             <div class="p-4 bg-yellow-50 rounded-md border border-yellow-200 text-gray-800 text-sm whitespace-pre-wrap">
-                <%= @interaction.memo.presence || "（メモなし）" %>
+            <h4 class="block text-sm font-medium leading-6 text-gray-900">担当者メモ</h4>
+            <div class="mt-2">
+                 <div class="p-4 bg-yellow-50 rounded-md border border-yellow-200 text-gray-800 text-sm whitespace-pre-wrap">
+                    <%= @interaction.memo.presence || "（メモなし）" %>
+                </div>
             </div>
         </div>
     </div>
@@ -72,3 +81,4 @@
         <% end %>
     </div>
   </div>
+</div>
