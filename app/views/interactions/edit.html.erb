@@ -81,6 +81,10 @@
   <% end %>
 </div>
 
+<!-- External form for AI Summarization (to avoid nested forms) -->
+<%= button_to "Summarize", summarize_interaction_path(@interaction), method: :post, id: "hidden-summarize-form", class: "hidden", form_class: "hidden" %>
+
+
 <script>
 // Simple auto-start trigger for recording controller
 document.addEventListener("turbo:load", () => {
