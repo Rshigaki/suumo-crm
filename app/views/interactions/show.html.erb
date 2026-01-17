@@ -15,7 +15,7 @@
         </div>
         <div>
             <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset <%= @interaction.completed? ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-yellow-50 text-yellow-800 ring-yellow-600/20' %>">
-                <%= @interaction.status_i18n %>
+                <%= I18n.t("enums.interaction.status.#{@interaction.status}", default: @interaction.status) %>
             </span>
         </div>
     </div>
@@ -27,7 +27,7 @@
             <div class="p-3 bg-gray-50 rounded-md border border-gray-200 text-gray-900">
                 <% if @interaction.customer %>
                     <%= link_to @interaction.customer.name, customer_path(@interaction.customer), class: "font-semibold text-indigo-600 hover:underline" %>
-                    <span class="text-gray-500 text-sm ml-2">(<%= @interaction.customer.status_i18n %>)</span>
+                    <span class="text-gray-500 text-sm ml-2">(<%= @interaction.customer.respond_to?(:status_i18n) ? @interaction.customer.status_i18n : @interaction.customer.status %>)</span>
                 <% else %>
                     <span class="text-gray-400 italic">未割り当て</span>
                 <% end %>
