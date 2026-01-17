@@ -1,12 +1,5 @@
 <% content_for :title, "接客詳細 ##{@interaction.id}" %>
 
-<div class="mx-auto w-full max-w-[800px] px-4 space-y-6">
-  
-  <% if notice.present? %>
-    <!-- Flash is handled globally usually, but if inline needed: -->
-    <!-- <div class="rounded-md bg-green-50 p-4 mb-4"> ... </div> -->
-  <% end %>
-
   <div class="bg-white shadow sm:rounded-lg p-8">
     <div class="border-b border-gray-200 pb-5 mb-6 flex justify-between items-center">
         <div>
@@ -79,4 +72,3 @@
         <% end %>
     </div>
   </div>
-</div>
