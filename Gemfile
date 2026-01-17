@@ -62,6 +62,9 @@ group :development, :test do
   # System testing
   gem "capybara"
   gem "selenium-webdriver"
+  
+  # Load environment variables from .env file
+  gem "dotenv-rails"
 end
 
 group :development do
