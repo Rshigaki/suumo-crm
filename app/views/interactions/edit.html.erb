@@ -1,96 +1,98 @@
   <% if @interaction.recording? %>
     <!-- Recording State -->
-    <div class="bg-white shadow sm:rounded-lg text-center p-10" 
-         data-controller="recording"
-         data-recording-target="element">
-      
-      <div class="mb-8">
-        <h2 class="text-3xl font-bold text-gray-900 tracking-tight">録音中</h2>
-        <div class="mt-4 text-6xl font-mono text-indigo-600" data-recording-target="timer">00:00</div>
-        <p class="mt-2 text-sm text-gray-500" data-recording-target="status">録音しています...</p>
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-10">
+      <div class="bg-white shadow sm:rounded-lg text-center p-6 sm:p-10" 
+           data-controller="recording"
+           data-recording-target="element">
+        
+        <div class="mb-8">
+          <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">録音中</h2>
+          <div class="mt-4 text-4xl sm:text-6xl font-mono text-indigo-600" data-recording-target="timer">00:00</div>
+          <p class="mt-2 text-sm text-gray-500" data-recording-target="status">録音しています...</p>
+        </div>
+
+        <!-- Form to submit on stop -->
+        <%= form_with(model: @interaction, class: "flex flex-col items-center gap-4") do |form| %>
+          <%= form.hidden_field :status, value: "processing" %>
+          <%= form.hidden_field :ended_at, value: Time.current %>
+          <%= form.hidden_field :transcript, data: { recording_target: "transcriptInput" } %>
+          
+          <!-- Live Transcript Display -->
+          <div class="w-full max-w-2xl mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200 min-h-[100px] text-left">
+              <p class="text-xs font-semibold text-gray-500 mb-2">リアルタイム文字起こし:</p>
+              <p class="text-gray-800 whitespace-pre-wrap" data-recording-target="liveTranscript">（録音を開始すると、ここに会話の内容が表示されます...）</p>
+          </div>
+          
+          <div class="flex flex-col sm:flex-row justify-center gap-4 w-full sm:w-auto">
+               <button type="button" 
+                      data-action="click->recording#start" 
+                      data-recording-target="startBtn" 
+                      class="hidden rounded-full bg-green-600 px-6 py-3 text-white font-bold shadow hover:bg-green-500 w-full sm:w-auto">
+                録音開始
+              </button>
+
+              <%= form.button "録音終了", 
+                  type: "submit", 
+                  data: { action: "click->recording#stop", recording_target: "stopBtn" },
+                  class: "rounded-full bg-red-600 px-8 py-4 text-white font-bold shadow-lg hover:bg-red-500 animate-pulse w-full sm:w-auto" %>
+          </div>
+        <% end %>
+         <div class="mt-4" data-controller="init-timer" data-action="init-timer:connect->recording#start"></div>
       </div>
-
-      <!-- Form to submit on stop -->
-      <%= form_with(model: @interaction, class: "flex flex-col items-center gap-4") do |form| %>
-        <%= form.hidden_field :status, value: "processing" %>
-        <%= form.hidden_field :ended_at, value: Time.current %>
-        <%= form.hidden_field :transcript, data: { recording_target: "transcriptInput" } %>
-        
-        <!-- Live Transcript Display -->
-        <div class="w-full max-w-2xl mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200 min-h-[100px] text-left">
-            <p class="text-xs font-semibold text-gray-500 mb-2">リアルタイム文字起こし:</p>
-            <p class="text-gray-800 whitespace-pre-wrap" data-recording-target="liveTranscript">（録音を開始すると、ここに会話の内容が表示されます...）</p>
-        </div>
-        
-        <div class="flex justify-center gap-4">
-             <button type="button" 
-                    data-action="click->recording#start" 
-                    data-recording-target="startBtn" 
-                    class="hidden rounded-full bg-green-600 px-6 py-3 text-white font-bold shadow hover:bg-green-500">
-              録音開始
-            </button>
-
-            <%= form.button "録音終了", 
-                type: "submit", 
-                data: { action: "click->recording#stop", recording_target: "stopBtn" },
-                class: "rounded-full bg-red-600 px-8 py-4 text-white font-bold shadow-lg hover:bg-red-500 animate-pulse" %>
-        </div>
-      <% end %>
-       <div class="mt-4" data-controller="init-timer" data-action="init-timer:connect->recording#start"></div>
     </div>
 
   <% else %>
     <!-- Review/Input State (Processing/Completed) -->
-    <div class="bg-white shadow sm:rounded-lg p-8">
-      <div class="border-b border-gray-200 pb-5 mb-6">
-        <h3 class="text-base font-semibold leading-6 text-gray-900">接客詳細 (編集)</h3>
-        <p class="mt-2 max-w-4xl text-sm text-gray-500">文字起こしを確認し、顧客を割り当てて保存してください。</p>
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-10">
+      <div class="bg-white shadow sm:rounded-lg p-4 sm:p-8">
+        <div class="border-b border-gray-200 pb-5 mb-6">
+          <h3 class="text-base font-semibold leading-6 text-gray-900">接客詳細 (編集)</h3>
+          <p class="mt-2 text-sm text-gray-500">文字起こしを確認し、顧客を割り当てて保存してください。</p>
+        </div>
+
+        <%= form_with(model: @interaction, class: "space-y-6") do |form| %>
+          <%= form.hidden_field :status, value: "completed" %>
+
+          <!-- Customer Assignment -->
+          <div>
+            <%= form.label :customer_id, class: "block text-sm font-medium leading-6 text-gray-900" %>
+            <div class="mt-2">
+              <%= form.collection_select :customer_id, current_user.company.customers, :id, :name, { include_blank: "既存顧客を選択" }, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+               <!-- Todo: Add "New Customer" quick create -->
+            </div>
+          </div>
+
+          <!-- Transcript (Mock) -->
+          <div>
+            <%= form.label :transcript, class: "block text-sm font-medium leading-6 text-gray-900" %>
+            <div class="mt-2">
+              <%= form.text_area :transcript, rows: 6, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+            </div>
+          </div>
+
+          <!-- Minutes (AI Generated) -->
+          <div>
+            <%= render "minutes_field", form: form, interaction: @interaction %>
+          </div>
+
+          <!-- Memo -->
+          <div>
+            <%= render "memo_field", form: form, interaction: @interaction %>
+          </div>
+
+          <div class="border-t border-gray-200 pt-6 flex flex-col-reverse sm:flex-row items-center justify-end gap-y-4 sm:gap-y-0 sm:gap-x-6">
+            <%= link_to "キャンセル", interactions_path, class: "text-sm font-semibold leading-6 text-gray-900 w-full sm:w-auto text-center" %>
+            <%= form.submit "保存する", class: "w-full sm:w-auto rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
+          </div>
+        <% end %>
       </div>
-
-      <%= form_with(model: @interaction, class: "space-y-6") do |form| %>
-        <%= form.hidden_field :status, value: "completed" %>
-
-        <!-- Customer Assignment -->
-        <div>
-          <%= form.label :customer_id, class: "block text-sm font-medium leading-6 text-gray-900" %>
-          <div class="mt-2">
-            <%= form.collection_select :customer_id, current_user.company.customers, :id, :name, { include_blank: "既存顧客を選択" }, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
-             <!-- Todo: Add "New Customer" quick create -->
-          </div>
-        </div>
-
-        <!-- Transcript (Mock) -->
-        <div>
-          <%= form.label :transcript, class: "block text-sm font-medium leading-6 text-gray-900" %>
-          <div class="mt-2">
-            <%= form.text_area :transcript, rows: 6, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
-          </div>
-        </div>
-
-        <!-- Minutes (AI Generated) -->
-        <div>
-          <%= render "minutes_field", form: form, interaction: @interaction %>
-        </div>
-
-        <!-- Memo -->
-        <div>
-          <%= render "memo_field", form: form, interaction: @interaction %>
-        </div>
-
-        <div class="border-t border-gray-200 pt-6 flex items-center justify-end gap-x-6">
-          <%= link_to "キャンセル", interactions_path, class: "text-sm font-semibold leading-6 text-gray-900" %>
-          <%= form.submit "保存する", class: "rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
-        </div>
-      <% end %>
     </div>
   <% end %>
-</div>
 
 <!-- External form for AI Summarization -->
 <form action="<%= summarize_interaction_path(@interaction) %>" method="post" id="ai-summarize-form" class="hidden">
   <%= token_tag %>
 </form>
-
 
 <script>
 // Simple auto-start trigger for recording controller
@@ -98,10 +100,6 @@ document.addEventListener("turbo:load", () => {
    const timerCtrl = document.querySelector('[data-controller="recording"]');
    if(timerCtrl) {
        // Ideally use Stimulus connect(), but for now ensuring start is called.
-       // My recording_controller.js doesn't auto start in connect(), so I need to trigger it.
-       // Actually I should update recording_controller.js to auto-start if in recording mode.
-       // The `data-action="init-timer:connect->recording#start"` trick needs a controller called init-timer. 
-       // Instead, let's just update the controller's connect method.
    }
 });
 </script>
