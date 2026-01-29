@@ -73,7 +73,7 @@ group :development do
 end
 
 
-gem "devise", "~> 4.9"
+gem "devise", "~> 5.0"
 
 gem "rails-i18n", "~> 8.1"
 gem "redcarpet"
